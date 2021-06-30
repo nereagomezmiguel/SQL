@@ -1,0 +1,92 @@
+---- Video 7
+SELECT *
+FROM pets;
+
+SELECT * 
+FROM owners; 
+
+/*LEFT JOIN*/
+SELECT *
+FROM pets
+LEFT JOIN owners 
+ON pets.ownerid = owners.ownerid;
+
+SELECT pets.name, owners.name
+FROM pets
+LEFT JOIN owners
+ON pets.ownerid = owners.ownerid;
+
+
+---- Video 8
+SELECT pets.name, owners.name
+FROM pets
+LEFT JOIN owners
+ON pets.ownerid = owners.ownerid
+WHERE LEFT(pets.name,1) = LEFT(owners.name, 1);
+
+SELECT a.name, b.name
+FROM pets as a
+LEFT JOIN owners as b
+ON a.ownerid = b.ownerid
+WHERE LEFT(a.name,1) = LEFT(b.name, 1);
+
+SELECT a.name as petname , b.name as ownername
+FROM pets as a
+LEFT JOIN owners as b
+ON a.ownerid = b.ownerid
+WHERE LEFT(a.name,1) = LEFT(b.name, 1);
+
+/*RIGHT JOIN*/
+SELECT a.name as petname, b.name as ownername
+FROM owners as b
+RIGHT JOIN pets as a
+ON a.ownerid = b.ownerid;
+
+
+---- Video 9
+/*INNER JOIN: usamos la tabla pets y procedurehistory*/
+
+SELECT *
+FROM pets as a
+INNER JOIN procedurehistory as b
+ON a.petid = b.petid;
+
+
+---- Video 10
+/*FULL OUTER JOIN */
+
+SELECT *
+FROM pets as a
+FULL OUTER JOIN procedurehistory as b
+on a.petid = b.petid;
+
+
+---- Video 11
+/*joining on multiple fields*/
+SELECT a.petid, a.proceduredate, a. proceduretype, a.proceduresubcode , b.description, b.price
+FROM procedurehistory as a
+LEFT JOIN proceduredetails as b
+ON a.proceduretype = b. proceduretype 
+AND a.proceduresubcode = b.proceduresubcode;
+
+
+---- Video 12
+/*complex join*/
+
+SELECT *
+FROM pets as p
+INNER JOIN procedurehistory as b
+ON p.petid = b.petid;
+
+SELECT *
+FROM pets as p
+INNER JOIN procedurehistory as b
+ON p.petid = b.petid
+LEFT JOIN proceduredetails as c
+ON b.proceduretype =c.proceduretype
+AND b.proceduresubcode =c.proceduresubcode;
+
+---- Video 14
+SELECT *
+FROM pets
+CROSS JOIN owners;

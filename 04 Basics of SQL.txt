@@ -1,0 +1,69 @@
+-------- Video 6
+--Ejercicio 1: productos y problemas de NY
+SELECT product_name, issue 
+FROM consumer_complaints
+WHERE state_name ='NY';
+
+--Ejercicio 2: productos con la misma fecha recibidos y enviados
+SELECT company, product_name, date_received, date_sent
+FROM consumer_complaints
+WHERE date_received = date_sent;
+
+--Ejercicio 3
+SELECT company, product_name, issue, state_name
+FROM consumer_complaints
+WHERE state_name ='CA' OR state_name='NY';
+
+--Ejercicio 4
+SELECT product_name, company, tags, timely_response
+FROM consumer_complaints
+WHERE tags = 'Servicemember' AND timely_response = 'Yes';
+
+SELECT product_name, company, tags, timely_response
+FROM consumer_complaints
+WHERE tags = 'Servicemember' OR timely_response = 'Yes';
+
+--------Video 7
+--Ejercicio 1: selecciona los nombres de los productos que tengan la palabra credit
+SELECT product_name
+FROM consumer_complaints
+WHERE product_name LIKE '%Credit%';
+
+/*---------------------------------------------------------------------------------------
+Utilizamos LIKE '%name%' cuando queremos que esa palabra aparezca en el resultado pero que no sea el nombre de la fila exactamente
+---------------------------------------------------------------------------------------*/
+
+SELECT product_name
+FROM consumer_complaints
+WHERE LOWER (product_name) LIKE '%credit%';
+
+SELECT product_name
+FROM consumer_complaints
+WHERE UPPER (product_name) LIKE '%CREDIT%';
+
+/*---------------------------------------------------------------------------------------
+Utilizamos upper y lower para que no haya problemas sobre como está escrita la palabra, lo que hace es poner en mayusculas o minusculas
+todas las letras de esa columna para que al buscar la palabra sea igual que como está escrita
+---------------------------------------------------------------------------------------*/
+
+-- Ejercicio 2: que el problema del producto incluya la palabra 'late'
+SELECT company, issue 
+FROM consumer_complaints
+WHERE LOWER(issue) like '%late%';
+
+-- Ejercicio 3:
+SELECT company, product_name, zip_code
+FROM consumer_complaints
+WHERE zip_code LIKE '4____'; -- si quiero que empiece por 4 e indico que va a ir seguido de 4 numeros mas
+
+SELECT company, product_name, zip_code
+FROM consumer_complaints
+WHERE zip_code LIKE '__4__'; -- si quiero indicar que el 4 está en el medio del codigo postal
+
+SELECT company, product_name, zip_code
+FROM consumer_complaints
+WHERE zip_code LIKE '%4%'; --contiene el 4 en cualquier posicion
+
+SELECT company, product_name, zip_code
+FROM consumer_complaints
+WHERE zip_code NOT LIKE '%4%'; -- no contiene el numero 4

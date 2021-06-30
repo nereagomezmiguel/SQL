@@ -1,0 +1,59 @@
+---- Video 3
+create database my_database;
+
+
+---- Video 4
+create table movies
+(
+	movie_name varchar(200), 
+	movie_year integer,
+	country varchar(100),
+	genre varchar not null,
+	primary key(movie_name, movie_year)
+);
+
+
+---- Video 5
+/*copiar datos de una bbdd*/
+COPY  movies FROM 'C:\Users\nerea.gomez\Documents\Curso SQL\EJERCICIOS\08\movies.csv' DELIMITER ',' CSV HEADER
+
+/*introducir datos en la tabla*/
+INSERT INTO movies VALUES ('SEVEN', 1995, 'USA', ('Mystic, Crime'))
+INSERT INTO movies VALUES ('INTERSTELLAR', 2014, 'USA', 'SCIENCE FICTION'), 
+('The Green Mile', 1999, 'USA', ('Mystic, Crime'))
+INSERT INTO movies VALUES ('The Godfather', 1998, '','Fiction')
+
+/*actualizar una tupla*/
+
+UPDATE movies
+SET country = 'USA'
+WHERE movie_name = 'The Godfather';
+
+
+---- Video 6
+/*ALTER TABLE*/ 
+INSERT INTO movies VALUES ('test', 1, DEFAULT, 'test');
+
+ALTER TABLE movies
+ALTER COLUMN country 
+SET DEFAULT 'USA';
+
+ALTER TABLE movies
+ADD director VARCHAR(150);
+
+SELECT *
+FROM MOVIES;
+
+UPDATE movies
+SET director = 'Christopher Nolan'
+WHERE LOWER(movie_name) ='interstellar';
+
+
+---- Video 7
+DELETE FROM movies
+WHERE movie_name ='test';
+
+ALTER TABLE movies 
+DROP director;
+
+DROP DATABASE movies;

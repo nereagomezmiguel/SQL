@@ -1,0 +1,1249 @@
+------------------------------------------------Ejercicios Select ----------------------------------------
+USE [AdventureWorksLT2008R2]
+GO
+
+/*Ejercicio 1: Escriba una declaración SELECT sobre la tabla “SalesLT.customer” que nos proporcione el número de identificación del cliente,
+apellidos, nombres y nombres de compañías.*/
+SELECT CustomerID,
+		LastName,
+		FirstName,
+		MiddleName,
+		CompanyName
+FROM SalesLt.Customer;
+
+
+/*Ejercicio 2: Escriba una declaración SELECT que nos proporcione el nombre, número de producto y color de cada producto de la tabla
+“SalesLT.product”.*/
+SELECT [Name],
+		ProductNumber,
+		Color
+FROM SalesLT.Product;
+
+/*Ejercicio 3: Escriba una instrucción SELECT que nos proporcione los números de ID de cliente y los números de ID de pedido de ventas de la 
+tabla SalesLT.SalesOrderHeader */
+SELECT CustomerID,
+		SalesOrderID
+FROM SalesLT.SalesOrderHeader;
+
+
+/*Ejercicio 4: Responda esta pregunta: ¿Por qué debería especificar nombres de columna en lugar de un asterisco al escribir la lista SELECT? 
+Da al menos dos razones.*/
+/* En primer lugar, cuando una BBDD tiene muchos atributos, y no especificamos que columnas deseamos ver, lo que vamos a obtener es 
+una gran tabla de la cual no vamos a poder obtener conclusiones y en segundo luegar, el tiempo de ejecucion es mayor.*/
+
+
+------------------------------------------------Ejercicios de filtrado de datos. ----------------------------------------
+USE [AdventureWorksLT2008R2]
+GO
+
+
+/*Ejercicio 5: Escriba una consulta mediante una cláusula WHERE que muestre todos los empleados enumerados en la tabla HumanResources.
+Employee que tienen el título de trabajo “Research and Development Engineer”. Muestre el número de ID de entidad comercial, el ID de inicio de 
+sesión y el título de cada uno.*/
+SELECT [BusinessEntityID],
+		[LoginID],
+		JobTitle
+FROM HumanResources.Employee
+WHERE [JobTitle]= 'Research and Development Engineer';
+
+
+/*Ejercicio 6: Escriba una consulta mediante una cláusula WHERE que muestre todos los nombres de Person.
+Person con el nombre intermedio J. Muestre los nombres, el apellido y los nombres intermedios junto con los números de identificador.*/
+SELECT FirstName,
+		MiddleName,
+		LastName,
+		BusinessEntityID
+FROM Person.Person
+WHERE MiddleName='J.';
+
+
+/*Ejercicio 7:Escriba una consulta que muestre todas las columnas de la tabla Production.ProductCostHistory de las filas que se modificaron el
+17 de junio de 2003. Asegúrese de usar una de las características de SQL Server Management StudioSQL Server Management Studio para ayudarle a 
+escribir esta consulta.  En SQL Server Management StudioSQL Server Management Studio, expanda la base de datos AdventureWorks2008. Expanda 
+Tablas. Haga clic con el botón derecho en la tabla Production.ProductCostHistory y elija "Seleccionar tabla como." Seleccione "Seleccionar en"
+y Nueva ventana del Editor de consultas. A continuación, escriba la cláusula WHERE.*/
+SELECT *
+FROM [Production].[ProductCostHistory]
+WHERE  [ModifiedDate]= '20030617 00:00:00.000';
+
+
+/*Ejercicio 8: Vuelva a escribir la consulta que escribió en la pregunta 1, 
+cambiándola para que se muestren los empleados que no tienen el título “Research and Development Engineer”.*/
+USE [AdventureWorksLT2008R2]
+GO
+SELECT CustomerID,
+		LastName,
+		FirstName,
+		MiddleName,
+		CompanyName
+FROM SalesLt.Customer
+WHERE [Title] != 'Research and Development Engineer';
+
+
+/*Ejercicio 9: Escriba una consulta que muestre todas las filas de la tabla Person.Person donde se modificaron las filas después del 29 de
+diciembre de 2000. Mostrar el número de ID de entidad comercial, las columnas de nombre y la fecha de modificación.*/
+USE [AdventureWorks2008R2]
+GO
+SELECT BusinessEntityID,
+		FirstName,
+		ModifiedDate
+FROM Person.Person
+WHERE ModifiedDate > '20001229 00:00:00.000';
+
+
+/*Ejercicio 10: Vuelva a escribir la última consulta para que se muestren las filas que no se modificaron el 29 de diciembre de 2000.*/
+SELECT BusinessEntityID,
+		FirstName,
+		ModifiedDate
+FROM Person.Person
+WHERE ModifiedDate != '20001229 00:00:00.000';
+
+
+/*Ejercicio 11: Vuelva a escribir la consulta de la pregunta 5 para que muestre las filas modificadas durante diciembre de 2000.*/
+SELECT [BusinessEntityID],
+		[LoginID],
+		JobTitle,
+		ModifiedDate
+FROM HumanResources.Employee
+WHERE [ModifiedDate] > '20001201 00:00:00.000'  AND [ModifiedDate] < '20010101 00:00:00.000';
+
+
+/*Ejercicio 12: Explicar por qué se debe usar una cláusula WHERE en muchas de las consultas de T-SQL.*/
+/*Utilizamos la clausula Where cuando solo nos interesan las tuplas que tengan un cierto valor en uno de los atributos de la tabla*/
+
+
+------------------------------------------------Ejercicios de filtrado de datos con comodines. ----------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+/*Ejercicio 13: Escriba una consulta que muestre el identificador del producto y el nombre de cada producto de la 
+tabla Production.Product con el nombre que comienza con “chain”.*/
+SELECT [ProductID],
+		[Name]
+FROM [Production].[Product]
+WHERE [Name] LIKE 'Chain%';
+
+
+/*Ejercicio 14: Escriba una consulta como la de la pregunta 1 que muestra los productos con casco “helmet” en el nombre.*/
+SELECT [ProductID],
+		[Name]
+FROM [Production].[Product]
+WHERE [Name] LIKE '%HELMET%';
+
+
+/*Ejercicio 15: Cambie la última consulta para que se muestren los productos sin casco “helmet” en el nombre*/
+SELECT [ProductID],
+		[Name]
+FROM [Production].[Product]
+WHERE [Name] != '%HELMET%';
+
+
+/*Ejercicio 16: Escriba una consulta que muestre el número de ID de entidad de negocio, el nombre, el segundo nombre y el apellido de la tabla Person.Person 
+solo para las filas que tienen E o B almacenadas en la columna de nombre intermedio.*/
+SELECT BusinessEntityID,
+		FirstName,
+		MiddleName,
+		LastName
+FROM  Person.Person
+WHERE MiddleName = 'E' OR MiddleName ='B';
+
+
+/*Ejercicio 17: Explicar la diferencia entre las dos consultas siguientes:*/
+SELECT FirstName,
+		LastName
+FROM Person.Person
+WHERE LastName LIKE 'Ja%es';/*en este caso indica que detrás de Ja continuan mas caracteres y que antes de es hay caracteres, pero no especifica el numero*/
+
+SELECT FirstName,
+		LastName
+FROM Person.Person
+WHERE LastName LIKE 'Ja_es'; /*en este caso nos indica que entre la a y la e solo va a haber 1 caracter*/
+
+
+
+----------------------------------------------------------------------Filtrado con múltiples predicados-----------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 18: Escriba una consulta que muestre el identificador de pedido, la fecha de pedido y el total de vencimiento de la tabla Sales.SalesOrderHeader.
+Recupere solo las filas en las que se realizó el pedido durante el mes de septiembre de 2001 y el total adeudado superó los 1.000 $.*/
+SELECT SalesOrderID,
+		OrderDate,
+		TotalDue
+FROM Sales.SalesOrderHeader
+WHERE OrderDate LIKE '200109%' AND TotalDue>1000;
+
+
+/*Ejercicio 19: Cambie la consulta en la pregunta 1 para que solo se recuperen las fechas del 1 al 3 de septiembre de 2001. 
+Vea si puede encontrar tres maneras diferentes de escribir esta consulta.*/
+SELECT SalesOrderID,
+		OrderDate,
+		TotalDue
+FROM Sales.SalesOrderHeader
+WHERE OrderDate LIKE '20010901%' OR OrderDate LIKE '20010902%' OR OrderDate LIKE '20010903%' AND TotalDue>1000;
+
+
+/*Ejercicio 20: Escriba una consulta que muestre los pedidos de ventas en los que el total adeudado supera los 1.000 USD. 
+Recupere solo las filas donde el identificador de vendedor es 279 o el identificador de territorio es 6.*/
+SELECT SalesOrderID,
+		OrderDate,
+		TotalDue,
+		TerritoryID,
+		SalesPersonID
+FROM Sales.SalesOrderHeader
+WHERE TotalDue>1000 AND SalesPersonID=279 OR TerritoryID =6;
+
+
+/*Ejercicio 21: Cambie la consulta en la pregunta 3 para que se incluya el territorio 4.*/
+SELECT SalesOrderID,
+		OrderDate,
+		TotalDue,
+		TerritoryID,
+		SalesPersonID
+FROM Sales.SalesOrderHeader
+WHERE TotalDue>1000 AND SalesPersonID=279 OR TerritoryID =6 OR TerritoryID =4;
+
+
+/*Ejercicio 22: Explicar cuándo tiene sentido utilizar el operador IN.*/
+SELECT SalesOrderID,
+		OrderDate,
+		TotalDue,
+		TerritoryID,
+		SalesPersonID
+FROM Sales.SalesOrderHeader
+WHERE TotalDue>1000 AND SalesPersonID=279 OR TerritoryID IN (6,4);
+/*Se utiliza cuando tienes que utilizar más de un valor en un mismo atributo*/
+
+
+---------------------------------------------Trabajando con vacíos y nulos-----------------------------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 23: Escriba una consulta que muestre las columnas ProductID, Name y Color de las filas de la tabla Production.Product. 
+Muestre solo las filas en las que no se ha asignado ningún color.*/
+SELECT ProductID,
+		[Name],
+		Color
+FROM Production.Product
+WHERE Color IS NULL;
+
+
+/*Ejercicio 24: Escriba una consulta que muestre las columnas ProductID, Name y Color de las filas de la tabla Production.Product. 
+Muestre solo las filas en las que el color no es azul. Aquí hay dos posibles soluciones.*/
+SELECT ProductID,
+		[Name],
+		Color
+FROM Production.Product
+WHERE Color!= 'azul';
+
+SELECT ProductID,
+		[Name],
+		Color
+FROM Production.Product
+WHERE Color NOT IN ('AZUL');
+
+
+/*Ejercicio 25: Escriba una consulta que muestre ProductID, Name, Style, Size y Color de la tabla Production.Product.
+Incluya solo las filas en las que al menos una de las columnas Style, Size o Color contiene un valor.*/
+SELECT ProductID,
+		[Name],
+		Color,
+		Style,
+		Size
+FROM Production.Product
+WHERE Color IS NOT NULL OR Style IS NOT NULL OR Size IS NOT NULL ;
+
+
+-------------------------------------Ordenando los datos----------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 26: Escriba una consulta que devuelva las columnas de ID y nombre de la entidad comercial de Person.Person. 
+Ordene los resultados por LastName, FirstName y MiddleName.*/
+SELECT BusinessEntityID,
+		FirstName
+FROM Person.Person
+ORDER BY LastName, FirstName, MiddleName;
+
+
+/*Ejercicio 27: Modifique la consulta escrita en la pregunta 1 para que los datos se devuelvan en el orden opuesto.*/
+SELECT BusinessEntityID,
+		FirstName
+FROM Person.Person
+ORDER BY LastName DESC, FirstName DESC, MiddleName DESC;
+
+
+--------------------------------------Escribir expresiones con operadores--------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 28: Escriba una consulta que se muestre en una sola columna el "AddressLine1, City y PostalCode”
+de la tabla Person.Address.*/
+SELECT CONCAT( AddressLine1,City,PostalCode) as direccion 
+FROM Person.Address;
+
+
+/*Ejercicio 29: Escriba una consulta mediante la tabla Production.Product que muestra las columnas de ID de producto, 
+color y nombre. Si la columna de color contiene un valor NULL, reemplace el color por Sin color.*/
+SELECT ProductID, isnull(Color, 'sin color')
+		Color,
+		[Name]
+FROM Production.Product;
+
+
+/*Ejercicio 30: Modifique la consulta escrita en la pregunta 2 para que la descripción del producto se muestre en el formato 
+"name: Color" (Ej “Gorra : Roja”). Asegúrese de que todas las filas muestran un valor incluso si falta el valor Color 
+(Remplazar por espacio en blanco).*/
+SELECT ProductID,
+		CONCAT([Name],' : ', ISNULL(Color,'')) AS descripcion
+FROM Production.Product;
+
+
+/*Ejercicio 31: Escriba una consulta con la tabla Production.Product que muestre una descripción con el formato "ProductID: Name". 
+Sugerencia: Tendrá que usar una función para escribir esta consulta.*/
+SELECT CONCAT(productId,' : ', [Name]) AS descripcion
+FROM Production.Product;
+
+
+/*Ejercicio 32: Explicar la diferencia entre las funciones ISNULL y COALESCE.*/
+/*Isnull se utiliza para reemplazar un valor nulo por un valor que asignes tu a la funcion. Coalesce devuelve el primer valor 
+que encuentre que no sea nulo*/
+
+
+-------------------------------------------Uso de operadores matemáticos.------------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 33: Escriba una consulta mediante la tabla Sales.SpecialOffer. Muestre la diferencia entre las columnas MinQty 
+y MaxQty junto con las columnas SpecialOfferID y Description.*/
+SELECT SpecialOfferID,
+		[Description],
+		ISNULL(MaxQty-MinQty,0) AS DIFERENCIA
+FROM Sales.SpecialOffer
+
+
+/*Ejercicio 34: Escriba una consulta mediante la tabla Sales.SpecialOffer. Multiplique la columna MinQty por la columna DiscountPct.
+Incluya las columnas SpecialOfferID y Description en los resultados.*/
+SELECT SpecialOfferID,
+		[Description],
+		MinQty*DiscountPct AS MULTIPLICACION
+FROM Sales.SpecialOffer
+
+
+/*Ejercicio 35: Escriba una consulta mediante la tabla Sales.SpecialOffer que multiplica la columna MaxQty por la columna 
+DiscountPCT.Si el valor MaxQty es null, sustitúylo por el valor 10. Incluya las columnas SpecialOfferID y Description en los
+resultados.*/
+SELECT SpecialOfferID,
+		[DESCRIPTION],
+		ISNULL(MaxQty*DiscountPCT, 10)
+FROM Sales.SpecialOffer
+
+
+/*Ejercicio 36: Describa la diferencia entre división y módulo.*/
+/*El modulo es el resto de la division, y la division es la cuenta en si*/
+
+
+---------------------------------Uso de funciones de cadena.---------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 37: Escriba una consulta que muestre los primeros 10 caracteres de la columna AddressLine1 en la tabla Person.Address.*/
+SELECT AddressLine1,
+		LEFT(AddressLine1, 10)
+FROM [Person].[Address]
+
+
+/*Ejercicio 38: Escriba una consulta que muestre los caracteres 10 a 15 de la columna AddressLine1 en la tabla Person.Address*/
+SELECT AddressLine1,
+		right(LEFT(AddressLine1, 15),6)
+FROM [Person].[Address]
+
+
+/*Ejercicio 39: Escriba una consulta que muestre el nombre y el apellido de la tabla Person.Person en mayúsculas.*/
+select upper(firstname), 
+		upper(lastname)
+from Person.Person;
+
+
+/*Ejercicio 40: Escriba una consulta que utilice la función SUBSTRING y la función CHARINDEX para mostrar los caracteres del número
+de producto que sigue al guion. Nota: también hay un segundo guion en muchas de las filas; ignorar el segundo guion para esta 
+pregunta. Sugerencia: Intente escribir esta instrucción en dos pasos, el primero con la función CHARINDEX y el segundo agregando 
+la función SUBSTRING.*/
+SELECT ProductNumber, CHARINDEX('-', ProductNumber)
+FROM production.Product;
+
+SELECT productnumber, SUBSTRING(ProductNumber, charindex('-',productnumber)+1,25) as prodnumber
+from Production.Product;
+
+
+-----------------------------------------------Uso de funciones de fecha ------------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 41: Escriba una consulta que calcule el número de días entre la fecha en que se realizó un pedido y la fecha en que se 
+envió mediante la tabla Sales.SalesOrderHeader. Incluya las columnas SalesOrderID, OrderDate y ShipDate.*/
+SELECT SalesOrderID, OrderDate, ShipDate, DATEDIFF(DAY, OrderDate, ShipDate) AS DIFF
+FROM SALES.SalesOrderHeader;
+
+
+/*Ejercicio 42: Escriba una consulta que muestre solo la fecha, no la hora, para la fecha de pedido y la fecha de envío en la tabla Sales.SalesOrderHeader.*/
+SELECT SalesOrderID,LEFT(OrderDate, 10) as orderdate, left(ShipDate, 10) as shipdate
+FROM SALES.SalesOrderHeader;
+
+
+/*Ejercicio 43: Escriba una consulta que agregue seis meses a cada fecha de pedido en la tabla Sales.SalesOrderHeader. Incluya las columnas SalesOrderID y OrderDate.*/
+SELECT SalesOrderID, OrderDate, DATEADD(MONTH,6, OrderDate) AS MAS6
+FROM SALES.SalesOrderHeader;
+
+
+/*Ejercicio 44: Escriba una consulta que muestre el año de cada fecha de pedido y el mes numérico de cada fecha de pedido en columnas separadas en los resultados. 
+Incluir las columnas SalesOrderID y OrderDate*/
+select SalesOrderID, OrderDate, year(OrderDate) as orderyear, MONTH(orderdate) as ordermonth
+from sales.SalesOrderHeader;
+
+select SalesOrderID, OrderDate, datepart(yyyy, OrderDate) as orderyear, datepart(m,orderdate) as ordermonth
+from sales.SalesOrderHeader;
+
+
+/*Ejercicio 45: Cambie la consulta escrita en la pregunta 4 para mostrar el nombre del mes en su lugar.*/
+select SalesOrderID, OrderDate, datepart(yyyy, OrderDate) as orderyear, datename(m,orderdate) as ordermonth
+from sales.SalesOrderHeader;
+
+
+--------------------------------------------------------Funciones matematicas-----------------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 46: Escriba una consulta mediante la tabla Sales.SalesOrderHeader que muestra el SubTotal redondeado a dos decimales. Incluya la columna SalesOrderID en 
+los resultados. */
+SELECT SalesOrderID, SubTotal, ROUND(SUBTOTAL, 2) AS REDONDEA
+FROM SALES.SalesOrderHeader
+
+
+/*Ejercicio 47: Modifique la consulta en la pregunta 1 para que el SubTotal se redondee al dólar más cercano, pero todavía muestra dos ceros a la derecha de la posición decimal*/
+SELECT SalesOrderID, SubTotal, ROUND(SUBTOTAL,0,2) AS REDONDEA
+FROM SALES.SalesOrderHeader
+
+
+/*Ejercicio 48: Escriba una consulta que calcule la raíz cuadrada del valor SalesOrderID de la tabla Sales.SalesOrderHeader.*/
+SELECT SalesOrderID, SQRT(SALESORDERID) AS RAIZ
+FROM SALES.SalesOrderHeader;
+
+
+/*Ejercicio 49: Escriba una instrucción que genere un número aleatorio entre 1 y 10 cada vez que se ejecute.*/
+SELECT CAST(RAND()*10 AS INT) +1
+
+
+--------------------------------------- Uso de funciones en where y clausulas en el order by --------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 50: Escriba una consulta mediante la tabla Sales.SalesOrderHeader para mostrar los pedidos realizados durante 2001 mediante una función.
+Incluya las columnas SalesOrderID y OrderDate en los resultados.*/
+SELECT SalesOrderID, OrderDate
+FROM SALES.SalesOrderHeader
+WHERE YEAR(OrderDate)=2001;
+
+
+/*Ejercicio 51: Escriba una consulta mediante la tabla Sales.SalesOrderHeader que enumera las ventas en orden del mes en que se realizó el pedido y, a continuación, 
+el año en que se realizó el pedido. Incluya las columnas SalesOrderID y OrderDate en los resultados.*/
+SELECT SalesOrderID, OrderDate
+FROM SALES.SalesOrderHeader
+ORDER BY MONTH(ORDERDATE), YEAR(ORDERDATE);
+
+
+/*Ejercicio 52: Escriba una consulta que muestre las columnas PersonType y name de la tabla Person.Person. Ordene los resultados para que las filas con un PersonType 
+de IN, SP o SC ordenen por LastName. Las otras filas deben ordenar por FirstName. Sugerencia: Utilice la función CASE.*/
+SELECT PersonType, FirstName
+FROM PERSON.Person
+ORDER BY CASE WHEN PersonType IN ('IN', 'SP','SC') THEN LastName 
+ELSE FirstName END;
+
+
+------------------------------------- QUERIES SSOBRE MULTIPLES TABLAS----------------------------------------------
+------------------------------------- USO DE INNER JOINS-----------------------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+/*Ejercicio 53: La tabla HumanResources.Employee no contiene los nombres de los empleados. Unir esa tabla a la Person.Person usando la columna BusinessEntityID.
+Mostrar el título del trabajo, la fecha de nacimiento, el nombre y el apellido.*/
+SELECT *
+FROM HumanResources.Employee; ---290 LINEAS
+
+SELECT * 
+FROM Person.Person ---19972 LINEAS
+
+SELECT A.JobTitle, A.BirthDate, B.FirstName, B.LastName
+FROM HumanResources.Employee AS A
+INNER JOIN PERSON.Person AS B
+ON A.BusinessEntityID=B.BusinessEntityID; ---290 LINEAS
+
+
+/*Ejercicio 54: Los nombres de los clientes también aparecen en la tabla Person.Person. Unir la tabla Sales.Customer a la tabla Person.Person. La columna BusinessEntityID
+de la tabla Person.Person coincide con la columna PersonID de la tabla Sales.Customer. Mostrar las columnas CustomerID, StoreID, y TerritoryID junto con las columnas de nombre.*/
+SELECT CustomerID, StoreID, TerritoryID, FirstName, LastName
+FROM Person.Person AS A
+INNER JOIN SALES.Customer AS B
+ON A.BusinessEntityID=B.PersonID;--19119LINEAS
+
+SELECT CustomerID, StoreID, TerritoryID, FirstName, LastName
+FROM SALES.Customer AS B
+INNER JOIN Person.Person AS A
+ON A.BusinessEntityID=B.PersonID ---19119 LINEAS
+
+
+/*Ejercicio 55: Extienda la consulta escrita en la pregunta 2 para incluir la tabla Sales.SalesOrderHeader. Mostrar la columna SalesOrderID junto con las columnas ya especificadas. 
+La tabla Sales.SalesOrderHeader combina la tabla Sales.Customer por la columna CustomerID.*/
+SELECT B.CustomerID, StoreID, B.TerritoryID, FirstName, LastName, SalesOrderID
+FROM SALES.Customer AS B
+INNER JOIN Person.Person AS A
+ON A.BusinessEntityID=B.PersonID 
+INNER JOIN SALES.SalesOrderHeader AS C
+ON C.CustomerID = B.CustomerID;
+
+
+/*Ejercicio 56: Escriba una consulta que una la tabla Sales.SalesOrderHeader a la tabla Sales.SalesPerson. Unir usando la columna BusinessEntityID de la tabla Sales.SalesPerson a 
+la columna SalesPersonID de la tabla Sales.SalesOrderHeader. Muestre SalesOrderID junto con SalesQuota y Bonus.*/
+SELECT SalesOrderID, SalesQuota, Bonus
+FROM SALES.SalesOrderHeader AS A
+INNER JOIN SALES.SalesPerson AS B
+ON A.SalesPersonID =B.BusinessEntityID
+
+
+/*Ejercicio 57: Agregue las columnas name a la consulta escrita en la pregunta 4 uniéndose en la tabla Person.Person. Vea si puede averiguar qué columnas se usarán para escribir 
+la combinación. Puede unir la tabla Person.Person en la tabla SalesOrderHeader o la tabla Sales.SalesPerson.*/
+SELECT SalesOrderID, SalesQuota, Bonus, FirstName, LastName
+FROM SALES.SalesOrderHeader AS A
+INNER JOIN SALES.SalesPerson AS B
+ON A.SalesPersonID =B.BusinessEntityID
+INNER JOIN PERSON.Person AS C
+ON C.BusinessEntityID= B.BusinessEntityID
+
+SELECT *
+FROM Person.Person
+
+SELECT * 
+FROM SALES.SalesPerson
+
+
+/*Ejercicio 58: La descripción del catálogo para cada producto se almacena en la tabla Production.ProductModel. Muestre las columnas que describen el producto de la tabla 
+Production.Product, como el color y el tamaño junto con la descripción del catálogo para cada producto.*/
+SELECT A.[NAME], A.CatalogDescription, B.Color, B.Size
+FROM Production.ProductModel AS A
+INNER JOIN Production.Product AS B
+ON A.ProductModelID = B.ProductModelID
+
+SELECT *
+FROM Production.ProductModel
+
+SELECT * 
+FROM Production.Product
+
+
+/*Ejercicio 59: Escriba una consulta que muestre los nombres de los clientes junto con los nombres de productos que han comprado.
+Sugerencia: ¡Se necesitarán cinco tablas para escribir esta consulta!*/
+SELECT FIRSTNAME, LASTNAME, [Name]
+FROM sales.Customer as A
+inner join person.Person as B
+on A.PersonID = b.BusinessEntityID
+inner join Sales.SalesOrderHeader as C
+on a.CustomerID =c.CustomerID
+inner join sales.SalesOrderDetail as d
+on c.SalesOrderID = d.SalesOrderID
+inner join Production.Product as e
+on d.ProductID = e.ProductID
+
+SELECT *
+FROM SALES.SALESORDERHEADER (SALESORDERID, CUSTOMERID)
+
+SELECT *
+FROM SALES.SALESORDERDETAIL (SALESORDERID)
+
+SELECT *
+FROM PRODUCTION.PRODUCT (NAME)
+
+
+-------------------------------------------------------------- uso de outer joins -------------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 60: Escriba una consulta que muestre todos los productos junto con SalesOrderID incluso si nunca se ha realizado un pedido para ese producto. 
+cruzar con la tabla sales.SalesOrderDetail mediante la columna ProductID.*/
+SELECT A.[NAME], B.SALESORDERID
+FROM Production.Product AS A
+LEFT OUTER JOIN SALES.SALESORDERDETAIL AS B
+ON A.PRODUCTID = B.PRODUCTID
+
+SELECT *
+FROM Production.Product
+
+SELECT *
+FROM SALES.SalesOrderDetail
+
+
+/*Ejercicio 61: Cambie la consulta escrita en la pregunta 1 para que solo aparezcan en la consulta los productos que no se han pedido.*/
+SELECT A.[NAME], B.SALESORDERID
+FROM Production.Product AS A
+LEFT OUTER JOIN SALES.SALESORDERDETAIL AS B
+ON A.PRODUCTID = B.PRODUCTID
+WHERE B.SalesOrderID IS NULL
+
+
+/*Ejercicio 62: Escriba una consulta que devuelva todas las filas de la tabla Sales.SalesPerson unida a la tabla Sales.SalesOrderHeader cruzando por la columna SalesOrderID 
+con BusinessEntityID, se deben obtener los datos de Sales.SalesPerson aunque no cruce con Sales.SalesOrderHeader. Incluya las columnas SalesOrderID, SalesPersonID y SalesYTD en 
+los resultados.*/
+SELECT B.SalesOrderID, B.SalesPersonID, A.SalesYTD
+FROM SALES.SalesPerson AS A
+LEFT OUTER JOIN SALES.SalesOrderHeader AS B
+ON A.BusinessEntityID = B.SalesOrderID
+
+SELECT *
+FROM SALES.SalesPerson
+
+
+/*Ejercicio 63: Cambie la consulta escrita en la pregunta 3 para que el nombre del vendedor también se muestre desde la tabla Person.Person.*/
+SELECT B.SalesOrderID, B.SalesPersonID, A.SalesYTD, C.FirstName
+FROM SALES.SalesPerson AS A
+LEFT OUTER JOIN SALES.SalesOrderHeader AS B
+ON A.BusinessEntityID = B.SalesOrderID
+LEFT OUTER JOIN Person.Person AS C
+ON A.BusinessEntityID = C.BusinessEntityID
+
+SELECT *
+FROM Person.Person
+
+
+/*Ejercicio 64: La tabla Sales.SalesOrderHeader contiene claves externas para las tablas Sales.CurrencyRate y Purchasing.ShipMethod. Escriba una consulta que una las tres tablas,
+asegurándose de que contiene todas las filas de Sales.SalesOrderHeader. Incluya las columnas CurrencyRateID, AverageRate, SalesOrderID y ShipBase*/
+SELECT A.SalesOrderID, B.CurrencyRateID, B.AverageRate, C.SHIPBASE
+FROM SALES.SalesOrderHeader AS A
+LEFT OUTER JOIN SALES.CurrencyRate AS B
+ON A.CurrencyRateID = B.CurrencyRateID
+LEFT OUTER JOIN Purchasing.ShipMethod AS C
+ON A.ShipMethodID = C.SHIPMETHODID
+
+SELECT *
+FROM SALES.SalesOrderHeader
+
+SELECT *
+FROM SALES.CurrencyRate
+
+SELECT *
+ FROM Purchasing.ShipMethod
+
+
+/*Ejercicio 65: Escriba una consulta que devuelva la columna BusinessEntityID de la tabla Sales.SalesPerson junto con cada ProductID de la tabla Production.Product*/
+SELECT A.BusinessEntityID, B.ProductID
+FROM SALES.SalesPerson AS A
+CROSS JOIN Production.Product AS B
+
+
+
+------------------------------------------------------------subqueries---------------------------------------------------------
+/*Ejercicio 66: Mediante una subconsulta, muestre los nombres de producto y los números de ID de producto de la tabla Production.Product que se han pedido
+(que se encuentran en la tabla Sales.SalesOrderDetail).*/
+SELECT ProductID, [NAME]
+FROM Production.Product 
+WHERE PRODUCTID IN (SELECT PRODUCTID FROM SALES.SalesOrderDetail);
+
+SELECT * 
+FROM Production.Product
+
+/*Ejercicio 67: Cambie la consulta escrita en la pregunta 1 para mostrar los productos que no se han pedido.*/
+SELECT ProductID, [NAME]
+FROM Production.Product 
+WHERE PRODUCTID NOT IN (SELECT PRODUCTID FROM SALES.SalesOrderDetail WHERE ProductID IS NOT NULL);
+
+
+/*Ejercicio 68: Si la tabla Production.ProductColor no forma parte de la base de datos AdventureWorks2008, ejecute el código listado a continuación para crearlo.
+Escriba una consulta mediante una subconsulta que devuelva las filas de la tabla Production.ProductColor que no se usan en la tabla Production.Product.*/
+IF OBJECT_ID('Production.ProductColor') IS NOT NULL BEGIN DROP TABLE Production.ProductColor;
+END
+
+CREATE table Production.ProductColor
+(Color nvarchar(15) NOT NULL PRIMARY KEY)
+GO
+
+--Insert most of the existing colors 
+INSERT INTO Production.ProductColor SELECT DISTINCT COLOR
+FROM Production.Product
+WHERE Color IS NOT NULL and Color <> 'Silver'
+
+--Insert some additional colors
+INSERT INTO Production.ProductColor
+VALUES ('Green'),('Orange'),('Purple');
+
+
+/*Ejercicio 69: Escriba una consulta que muestre los colores utilizados en la tabla Production.Product que no aparecen en la tabla Production.ProductColor mediante una subconsulta. 
+Utilice la palabra clave DISTINCT antes del nombre de columna para devolver cada color solo una vez.*/
+SELECT DISTINCT Color
+FROM Production.Product
+WHERE COLOR NOT IN (SELECT COLOR FROM Production.ProductColor WHERE Color IS NOT NULL)
+
+
+/*Ejercicio 70: Escriba una consulta UNION que combine ModifiedDate de Person.Person y HireDate de HumanResources.Employee.*/
+SELECT ModifiedDate
+FROM Person.Person
+UNION
+SELECT HIREDATE
+FROM HumanResources.Employee
+
+
+-----------------------------------------Exploración de tablas derivadas y expresiones de tablas comunes--------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 71: Con una tabla derivada, una la tabla Sales.SalesOrderHeader con la tabla Sales.SalesOrderDetail. Mostrar las columnas SalesOrderID, OrderDate y ProductID en
+los resultados. La tabla Sales.SalesOrderDetail debe estar dentro de la consulta de tabla derivada.*/
+SELECT A.SalesOrderID, A.OrderDate, PRODUCTID
+FROM SALES.SalesOrderHeader AS A
+INNER JOIN (SELECT SALESORDERID, PRODUCTID
+			FROM SALES.SalesOrderDetail) AS B
+			ON A.SALESORDERID = B.SALESORDERID;
+
+
+/*Ejercicio 72: Vuelva a escribir la consulta en la pregunta 1 con una expresión de tabla común (CTE).*/
+WITH B AS (SELECT SALESORDERID, PRODUCTID
+			FROM SALES.SalesOrderDetail)
+SELECT  A.SalesOrderID, A.OrderDate, PRODUCTID
+FROM SALES.SalesOrderHeader AS A
+INNER JOIN B ON A.SalesOrderID=B.SalesOrderID
+
+
+/*Ejercicio 73: Escriba una consulta que muestre a todos los clientes junto con los pedidos realizados en 2001. Use una expresión de tabla común para escribir la consulta e incluir las columnas
+CustomerID, SalesOrderID y OrderDate en los resultados.*/
+WITH B AS (SELECT SALESORDERID, OrderDate, CustomerID
+			FROM SALES.SalesOrderHeader
+			WHERE YEAR(OrderDate)=2001)
+SELECT  A.CustomerID, A.SalesOrderID, A.OrderDate
+FROM SALES.SalesOrderHeader AS A
+INNER JOIN B ON A.CustomerID=B.CustomerID
+
+
+----------------------------------------------------------- AGRUPACIÓN Y SIMPLIFICACION DE LOS DATOS ----------------------------------------------------
+--------------------------------------------------------uso de funciones de agregado -------------------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 74: Escriba una consulta para determinar el número de clientes en la tabla Sales.Customer.*/
+SELECT DISTINCT COUNT(CUSTOMERID) AS NCLIENTES
+FROM SALES.Customer -----19820
+
+SELECT COUNT(*)
+FROM SALES.CUSTOMER
+
+
+/*Ejercicio 75: Escriba una consulta que muestre el número total de productos pedidos. Utilice la columna OrderQty de la tabla Sales.SalesOrderDetail y la función SUM*/
+SELECT SUM(ORDERQTY) AS TOTALPROD
+FROM SALES.SalesOrderDetail
+
+
+/*Ejercicio 76: Escriba una consulta para determinar el precio del producto más caro solicitado. Utilice la columna UnitPrice de la tabla Sales.SalesOrderDetail*/
+SELECT MAX(UNITPRICE) AS MASCARO
+FROM SALES.SalesOrderDetail
+
+
+/*Ejercicio 77: Escriba una consulta para determinar el importe medio de “freight” en la tabla Sales.SalesOrderHeader.*/
+SELECT AVG(FREIGHT) AS MEDIA
+FROM SALES.SalesOrderHeader
+
+
+/*Ejercicio 78: Escriba una consulta mediante la tabla Production.Product que muestra el valor mínimo, máximo y promedio de ListPrice.*/
+SELECT MIN(LISTPRICE) AS MIN, MAX(LISTPRICE) AS MAX, AVG(LISTPRICE) AS MEDIA
+FROM Production.Product
+
+
+-----------------------------------------uso de la clausula group by ------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 79: Escriba una consulta que muestre el número total de artículos pedidos para cada producto. Use la tabla Sales.SalesOrderDetail para escribir la consulta.*/
+SELECT SalesOrderID, SUM(ORDERQTY) AS CANTIDAD
+FROM SALES.SalesOrderDetail
+GROUP BY SalesOrderID
+
+
+/*Ejercicio 80: Escriba una consulta mediante la tabla Sales.SalesOrderDetail que muestra un recuento de las líneas de detalle para cada SalesOrderID.*/
+SELECT SalesOrderID, COUNT(SALESORDERID) AS RECUENTO
+FROM SALES.SalesOrderDetail
+GROUP BY SalesOrderID
+
+
+/*Ejercicio 81: Escriba una consulta mediante la tabla Production.Product que enumera un recuento de los productos de cada línea de productos.*/
+SELECT ProductLine, COUNT(ProductLine) AS RECUENTOLINEA
+FROM Production.Product
+GROUP BY ProductLine
+
+
+
+/*Ejercicio 82: Escriba una consulta que muestre el recuento de pedidos realizados por año para cada cliente mediante la tabla Sales.SalesOrderHeader.*/
+SELECT CustomerID, YEAR(ORDERDATE) AS AÑO, COUNT(CUSTOMERID) AS RECUENTO
+FROM SALES.SalesOrderHeader
+GROUP BY YEAR(OrderDate), CustomerID
+
+SELECT CUSTOMERID, COUNT(*) AS COUNTSALES, YEAR(ORDERDATE) AS ORDERYEAR
+FROM SALES.SalesOrderHeader
+GROUP BY CustomerID, YEAR(OrderDate)
+
+
+------------------------------------------------------------uso de la clausula having------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 83: Escriba una consulta que devuelva un recuento de líneas de detalle en la tabla Sales.SalesOrderDetail. Incluye solo las ventas que tengan mas de tres lineas
+de detalle*/
+SELECT COUNT(*) AS RECUENTO, SalesOrderID
+FROM SALES.SalesOrderDetail
+GROUP BY SalesOrderID
+HAVING COUNT(*) >3
+
+/*Ejercicio 84: Escriba una consulta que cree una suma de LineTotal en la tabla Sales.SalesOrderDetail agrupada por SalesOrderID. Incluya solo las filas en las que la suma 
+supera las 1.000.*/
+SELECT SUM(LINETOTAL) AS SUMA, SalesOrderID
+FROM SALES.SalesOrderDetail
+GROUP BY SalesOrderID
+HAVING SUM(LINETOTAL) >1000
+
+
+/*Ejercicio 85: Escriba una consulta que agrupe los productos por ProductModelID junto con un recuento (count). Muestre las filas que tienen un recuento que es igual a 1.*/
+SELECT ProductModelID, COUNT(PRODUCTMODELID) AS RECUENTO 
+FROM Production.Product
+GROUP BY ProductModelID
+HAVING COUNT(ProductModelID) = 1
+
+
+/*Ejercicio 86: Cambie la consulta en la pregunta 3 para que solo se incluyan los productos con el color azul o rojo.*/
+SELECT ProductModelID, COUNT(PRODUCTMODELID) AS RECUENTO 
+FROM Production.Product
+WHERE COLOR IN ('Blue', 'Red')
+GROUP BY ProductModelID
+HAVING COUNT(ProductModelID) = 1
+
+SELECT * 
+FROM Production.Product
+
+
+-----------------------------------------------------uso distinct-----------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 87: Escriba una consulta mediante la tabla Sales.SalesOrderDetail para crear un recuento de valores ProductID únicos que se han pedido.*/
+select distinct  count(ProductID) as recuento
+from sales.SalesOrderDetail
+
+select * 
+from sales.SalesOrderDetail
+
+
+/*Ejercicio 88: Escriba una consulta mediante la tabla Sales.SalesOrderHeader que devuelve el recuento de valores TerritoryID únicos por cliente.*/
+select distinct count(territoryid) as recuento, CustomerID
+from sales.SalesOrderHeader
+group by CustomerID
+
+select * from sales.SalesOrderHeader
+
+
+-------------------------------------uso de consultas agregadas con mas de una tabla-------------------------------------------
+USE [AdventureWorks2008R2]
+GO
+
+
+/*Ejercicio 89: Escriba una consulta que una a las tablas Person.Person, Sales.Customer y Sales.SalesOrderHeader para devolver una lista de los nombres de
+los clientes junto con un recuento de los pedidos realizados.*/
+SELECT FirstName, LastName, COUNT(*) AS NPEDIDOS
+FROM PERSON.Person AS A
+INNER JOIN SALES.Customer AS B
+ON B.PersonID = A.BusinessEntityID
+INNER JOIN SALES.SalesOrderHeader AS C
+ON B.CustomerID = C.CustomerID
+GROUP BY FirstName, LastName
+
+SELECT *
+FROM SALES.SalesOrderHeader
+
+
+/*Ejercicio 90: Escriba una consulta mediante las tablas Sales.SalesOrderHeader, Sales.SalesOrderDetail y Production.Product para mostrar la suma total de 
+productos por ProductID y OrderDate.*/ 
+SELECT C.PRODUCTID, A.ORDERDATE, SUM(ORDERQTY)
+FROM SALES.SalesOrderHeader AS A
+INNER JOIN SALES.SalesOrderDetail AS B
+ON A.SalesOrderID = B.SalesOrderID
+INNER JOIN Production.Product AS C
+ON B.ProductID = C.ProductID
+GROUP BY C.PRODUCTID, A.OrderDate
+
+select *
+ from sales.SalesOrderHeader
+
+select *
+from sales.SalesOrderDetail
+
+select * 
+from Production.Product
+
+
+--------------------------------------------MANIPULACION DE DATOS ---------------------------------------------
+--------------------------------------------insertando nuevas filas--------------------------------------------
+USE [AdventureWorksLT2008R2]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects
+			WHERE object_id =
+			OBJECT_ID(N'[dbo].[demoProduct]') AND type in
+			(N'U'))
+DROP TABLE [dbo].[demoProduct] 
+GO
+
+CREATE TABLE [dbo].[demoProduct]( [ProductID] [INT] NOT NULL PRIMARY KEY,
+[Name] [dbo].[Name] NOT NULL, [Color] [NVARCHAR](15) NULL,
+[StandardCost] [MONEY] NOT NULL, [ListPrice] [MONEY] NOT NULL, [Size] [NVARCHAR](5) NULL, [Weight] [DECIMAL](8, 2) NULL,
+);
+
+IF EXISTS (SELECT * FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[dbo].[demoSalesOrderHeader]') AND type in (N'U'))
+DROP TABLE [dbo].[demoSalesOrderHeader]
+GO
+
+CREATE TABLE [dbo].[demoSalesOrderHeader]( [SalesOrderID] [INT] NOT NULL PRIMARY KEY, [SalesID] [INT] NOT NULL IDENTITY, [OrderDate] [DATETIME] NOT NULL, 
+[CustomerID] [INT] NOT NULL, [SubTotal] [MONEY] NOT NULL, [TaxAmt] [MONEY] NOT NULL, [Freight] [MONEY] NOT NULL,[DateEntered] [DATETIME],
+[TotalDue] AS (ISNULL(([SubTotal]+[TaxAmt])+[Freight],(0))), [RV] ROWVERSION NOT NULL);
+GO
+
+ALTER TABLE [dbo].[demoSalesOrderHeader] ADD CONSTRAINT [DF_demoSalesOrderHeader_DateEntered]
+DEFAULT (GETDATE()) FOR [DateEntered];
+GO
+
+IF EXISTS (SELECT * FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[dbo].[demoAddress]') AND type in (N'U'))
+DROP TABLE [dbo].[demoAddress] 
+GO
+
+CREATE TABLE [dbo].[demoAddress](
+[AddressID] [INT] NOT NULL IDENTITY PRIMARY KEY, [AddressLine1] [NVARCHAR](60) NOT NULL, [AddressLine2] [NVARCHAR](60) NULL,
+[City] [NVARCHAR](30) NOT NULL,
+[StateProvince] [dbo].[Name] NOT NULL, [CountryRegion] [dbo].[Name] NOT NULL, [PostalCode] [NVARCHAR](15) NOT NULL
+);
+
+
+/*Ejercicio 91:Escriba una instrucción SELECT para recuperar datos de la tabla SalesLT.Product. Utilice estos valores para insertar cinco
+filas en la tabla dbo.demoProduct utilizando valores literales. Escriba cinco instrucciones INSERT individuales. Las filas que elijas para insertar deben variar. */
+SELECT PRODUCTID, NAME, COLOR, STANDARDCOST, LISTPRICE, SIZE, WEIGHT
+FROM SalesLT.Product
+
+INSERT INTO dbo.demoProduct( PRODUCTID, NAME, COLOR, STANDARDCOST, LISTPRICE, SIZE, WEIGHT)
+VALUES (680,'HL Road Frame - Black, 58','Black',1059.31	,1431.50,58,1016.04)
+
+INSERT INTO dbo.demoProduct( PRODUCTID, NAME, COLOR, STANDARDCOST, LISTPRICE, SIZE, WEIGHT)
+VALUES (706,'HL Road Frame - Red, 58','Red',1059.31,1431.50,58,1016.04)
+
+INSERT INTO dbo.demoProduct( PRODUCTID, NAME, COLOR, STANDARDCOST, LISTPRICE, SIZE, WEIGHT)
+VALUES (707,'Sport-100 Helmet, Red','Red',13.0863,34.99,NULL,NULL)
+
+INSERT INTO dbo.demoProduct( PRODUCTID, NAME, COLOR, STANDARDCOST, LISTPRICE, SIZE, WEIGHT)
+VALUES (708,'Sport-100 Helmet, Black','Black',13.0863,34.99,NULL,NULL)
+
+INSERT INTO dbo.demoProduct( PRODUCTID, NAME, COLOR, STANDARDCOST, LISTPRICE, SIZE, WEIGHT)
+VALUES (709,'Mountain Bike Socks, M','White',3.3963,9.50,'M',NULL)
+
+SELECT *
+FROM DBO.demoProduct 
+
+
+/*Ejercicio 92: Inserte cinco filas más en la tabla dbo.demoProduct. Esta vez usando una sola instrucción INSERT, las filas que elijas deben variar.*/
+INSERT INTO  dbo.demoProduct( PRODUCTID, NAME, COLOR, STANDARDCOST, LISTPRICE, SIZE, WEIGHT)
+VALUES (710,'HL Road Frame - Black, 58','Black',109.31	,1471.50,258,116.04),
+(711,'HL Road Frame - Red, 58','Red',1059.31,1431.50,58,1016.04),
+(712,'Sport-100 Helmet, Red','Red',13.0863,34.99,NULL,NULL),
+(713,'Sport-100 Helmet, Black','Black',13.0863,34.99,NULL,NULL),
+(714,'Mountain Bike Socks, M','White',3.3963,9.50,'M',NULL)
+
+
+/*Ejercicio 93: Escriba una instrucción INSERT que inserte todas las filas en la tabla dbo.demoSalesOrderHeader de la tabla SalesLT.SalesOrderHeader.
+Sugerencia: Preste mucha atención a las propiedades de las columnas de la tabla dbo.demoSalesOrderHeader. No inserte un valor en las columnas SalesID, DateEntered y RV.*/
+INSERT INTO DBO.demoSalesOrderHeader(SalesOrderID, REVISIONNUMBER, ORDERDATE, DUEDATE)
+SELECT SALESORDERID, REVISIONNUMBER,ORDERDATE,DUEDATE
+FROM SALESLT.SalesOrderHeader
+
+
+/*Ejercicio 94: Escriba una instrucción SELECT INTO que cree una tabla, dbo.tempCustomerSales, que muestre cada CustomerID de SalesLT.Customer junto con un 
+recuento de los pedidos realizados y el importe total adeudado para cada cliente.*/
+SET IDENTITY_INSERT DBO.DEMOADDRESS ON;
+SELECT C.CustomerID, COUNT(ISNULL(SALESORDERID,0)) AS RECUENTO, SUM(TOTALDUE) AS TOTALDUE
+INTO DBO.TEMPCUSTOMERSALES
+FROM SalesLT.Customer AS C
+LEFT JOIN SalesLT.SalesOrderHeader AS S
+ON C.CustomerID = S.CustomerID
+GROUP BY C.CustomerID
+
+
+/*Ejercicio 95: Escriba una instrucción INSERT que inserte todos los productos en la tabla dbo.demoProduct de la tabla SalesLT.Product que aún no se hayan insertado.
+No especifique valores ProductID literales en la instrucción.*/
+SET IDENTITY_INSERT DBO.demoProduct ON;
+INSERT INTO DBO.demoProduct(ProductID, Name, Color, StandardCost, ListPrice, Size, Weight)
+SELECT ProductID, Name, Color, StandardCost, ListPrice, Size, Weight
+FROM SalesLT.Product
+WHERE ProductID NOT IN (SELECT ProductID FROM DBO.demoProduct WHERE ProductID IS NOT NULL)
+
+/*Ejercicio 97: Escriba una instrucción INSERT que inserte todas las direcciones en la tabla dbo.demoAddress de la tabla SalesLT.Address. Antes de ejecutar la 
+instrucción INSERT, escriba y ejecute el comando para que pueda insertar valores en la columna AddressID.*/
+SET IDENTITY_INSERT DBO.DEMOADDRESS ON;
+
+INSERT INTO DBO.demoAddress (AddressID, AddressLine1, AddressLine2, City, StateProvince,CountryRegion, PostalCode)
+SELECT AddressID, AddressLine1, AddressLine2, City, StateProvince,CountryRegion, PostalCode
+FROM SalesLT.Address;
+
+SET IDENTITY_INSERT DBO.DEMOADDRESS OFF;
+
+SELECT *
+FROM DBO.DEMOADDRESS
+
+---------------------------------------------------------borrado de  filas --------------------------------------------------------------------
+USE AdventureWorksLT2008;
+GO
+
+IF EXISTS (SELECT * FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[dbo].[demoProduct]') AND type in (N'U'))
+DROP TABLE [dbo].[demoProduct]; 
+GO
+
+SELECT * INTO dbo.demoProduct FROM SalesLT.Product; IF EXISTS (SELECT * FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[dbo].[demoCustomer]')
+AND type in (N'U')) DROP TABLE [dbo].[demoCustomer]; 
+GO
+
+SELECT * INTO dbo.demoCustomer FROM SalesLT.Customer; IF EXISTS (SELECT * FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[dbo].[demoAddress]') AND type in (N'U'))
+DROP TABLE [dbo].[demoAddress]; 
+GO
+
+SELECT * INTO dbo.demoAddress FROM SalesLT.Address; IF EXISTS (SELECT * FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[dbo].[demoSalesOrderHeader]') AND type in (N'U'))
+DROP TABLE [dbo].[demoSalesOrderHeader]; 
+GO
+
+SELECT * INTO dbo.demoSalesOrderHeader FROM SalesLT.SalesOrderHeader; IF EXISTS (SELECT * FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[dbo].[demoSalesOrderDetail]')
+AND type in (N'U'))
+DROP TABLE [dbo].[demoSalesOrderDetail]; 
+GO
+
+SELECT * INTO dbo.demoSalesOrderDetail FROM SalesLT.SalesOrderDetail;
+
+
+/*Ejercicio 98: Escriba una consulta que elimine las filas de la tabla dbo.demoCustomer donde los valores LastName comienzan con la letra S.*/
+DELETE FROM DBO.demoCustomer
+WHERE LASTNAME LIKE 'S%';
+
+/*Ejercicio 99: Elimine las filas de la tabla dbo.demoCustomer si el cliente no ha realizado un pedido o si la suma de TotalDue de la tabla dbo.demoSalesOrderHeader 
+para el cliente es menor de $1,000.*/
+DELETE FROM DBO.demoCustomer
+WHERE CustomerID IN(
+					SELECT C.CUSTOMERID
+					FROM DBO.demoCustomer AS C
+					LEFT OUTER JOIN DBO.demoSalesOrderHeader AS S
+					ON C.CustomerID = S.CUSTOMERID
+					GROUP BY C.CustomerID
+					HAVING SUM(ISNULL(TOTALDUE,0))>1000);
+
+SELECT *
+FROM DBO.demoCustomer
+
+
+/*Ejercicio 100: Elimine las filas de la tabla dbo.demoProduct que nunca se han pedido.*/
+DELETE FROM DBO.demoProduct
+WHERE ProductID NOT IN (
+						SELECT ProductID
+						FROM DBO.demoSalesOrderDetail
+						WHERE ProductID IS NOT NULL);
+
+-----------------------------------------------------------actualizar filas existentes-----------------------------------------------------
+USE AdventureWorksLT2008;
+GO
+
+
+/*Ejercicio 101: Escriba una instrucción UPDATE que cambie todos los valores NULL de la columna AddressLine2 de la tabla dbo.demoAddress a N/A. */
+UPDATE DBO.demoAddress
+SET AddressLine2 = 'N/A'
+WHERE AddressLine2=NULL;
+
+
+/*Ejercicio 102: Escriba una instrucción UPDATE que aumente el ListPrice de cada producto de la tabla dbo.demoProduct en un 10 por ciento.*/
+UPDATE DBO.demoProduct
+SET ListPrice = ListPrice*1.1
+
+UPDATE DBO.demoProduct
+SET ListPrice*=1.1;
+
+
+/*Ejercicio 103: Escriba una instrucción UPDATE que corrija el valor de UnitPrice con el de ListPrice de cada fila de la tabla dbo.demoSalesOrderDetail 
+cruzando con la tabla dbo.demoProduct*/
+UPDATE DBO.demoSalesOrderDetail
+SET UnitPrice = P.LISTPRICE
+FROM DBO.demoSalesOrderDetail AS S
+INNER JOIN DBO.demoProduct AS P ON S.ProductID =P.ProductID; 
+
+
+/*Ejercicio 104: Escriba una instrucción UPDATE que actualice la columna SubTotal de cada fila de la tabla dbo.demoSalesOrderHeader con la suma de la columna LineTotal de la tabla
+dbo.demoSalesOrderDemo.*/
+with s as( select sum(linetotal) as totalsum, salesorderid
+			from dbo.demoSalesOrderDetail
+			group by SalesOrderID)
+			UPDATE C
+SET SUBTOTAL = totalsum
+FROM DBO.demoSalesOrderHeader AS C
+INNER join s on c.SalesOrderID =c.SalesOrderID;
+
+
+--------------------------------------------COMPRENDER LA LOGICA DE PROGRAMACION DE T-SQL---------------------------------------
+-------------------------------creacion de tablas temporales y variables de tabla ---------------------------
+USE [AdventureWorks2008R2];
+GO
+
+
+/*Ejercicio 105: Cree una tabla temporal denominada #CustomerInfo que contenga las columnas CustomerID, FirstName y LastName. Incluya las columnas CountOfSales y SumOfTotalDue. 
+Rellene la tabla con una consulta mediante las tablas Sales.Customer, Person.Person y Sales.SalesOrderHeader.*/
+create table #customerinfo (customerId INT,
+							firstname varchar(50),
+							lastname varchar (50), 
+							countofsales int,
+							sumoftotaldue money)
+GO
+
+insert into #customerinfo(customerId, firstname,lastname,countofsales,sumoftotaldue)
+select c.customerid, firstname, lastname, count(*), sum(totaldue)
+from sales.Customer as c
+inner join person.person as p on c.CustomerID= p.BusinessEntityID
+inner join sales.SalesOrderHeader as s on s.CustomerID= c.CustomerID
+group by c.CustomerID, firstname, lastname
+
+select *
+from sales.SalesOrderHeader
+
+
+/*Ejercicio 106: Cambie el código escrito en la pregunta 1 para utilizar una variable de tabla en lugar de una tabla temporal.*/
+declare @customerinfo table (customerId INT,
+							firstname varchar(50),
+							lastname varchar (50), 
+							countofsales int,
+							sumoftotaldue money)
+GO
+
+insert into @customerinfo(customerId, firstname,lastname,countofsales,sumoftotaldue)
+select c.customerid, firstname, lastname, count(*), sum(totaldue)
+from sales.Customer as c
+inner join person.person as p on c.CustomerID= p.BusinessEntityID
+inner join sales.SalesOrderHeader as s on s.CustomerID= c.CustomerID
+group by c.CustomerID, firstname, lastname
+
+/*Ejercicio 107: Cree una variable de tabla con dos columnas enteras, una de ellas una columna INDENTITY. Utilice un bucle WHILE para rellenar la tabla con 1.000 enteros 
+aleatorios mediante la siguiente fórmula. Utilice un segundo bucle WHILE para imprimir los valores de la variable de tabla uno por uno*/ 
+
+
+
+-----------------------------------------MOVER LA LOGICA A LA BASE DE DATOS ----------------------------
+-------------------------------------creando tablas-----------------------------------------
+USE [AdventureWorks2008R2];
+GO
+
+
+/*Ejercicio 108: Cree una tabla llamada dbo.testCustomer. Incluya una columna CustomerID que sea primary key e identity. Incluya las columnas FirstName y LastName. 
+Incluya una columna Age con una check constraint que especifique que el valor debe ser inferior a 120. Incluya una columna que su valor predeterminado sea “Y” y solo
+permita Y o N. Agregar algunas filas a la tabla.*/
+CREATE TABLE dbo.testCustomer (CustomerID int not null primary key identity,
+								firstname varchar (50),
+								lastname varchar (50),
+								Age int,
+								smoke varchar(1) default 'Y',
+								constraint ch_testcustomer_age check (Age<120),
+								constraint ch_testcustomer_smoke check (smoke in ('Y', 'N')))
+
+
+/*Ejercicio 109: Cree una tabla llamada dbo.testOrder. Incluya una columna CustomerID que sea una foreign key que apunte a dbo.testCustomer. Incluya una columna OrderID que sea 
+una primary key de tipo identity. Incluya una columna OrderDate que tenga como valor predeterminado la fecha y hora actuales. Incluya una columna ROWVERSION. Agregue algunas filas
+a la tabla.*/
+CREATE TABLE dbo.testorder(customerid int not null,
+							orderid int not null identity primary key,
+							orderdate date default getdate(),
+							rw rowversion,
+							constraint fk_testorder_customerid foreign key(customerid)
+							references dbo.testcustomer(customerid))
+
+
+/*Ejercicio 110: Cree una tabla llamada dbo.testOrderDetail. Incluya una columna OrderID que sea una foreign key que apunte a dbo.testOrder. Incluya una columna ItemID Integer,
+una columna Price y una columna Qty. La clave principal debe ser una clave compuesta de las columnas OrderID y ItemID. Cree una columna calculada denominada LineItemTotal que 
+multiplique los precios De precio Cantidad. Agregue algunas filas a la tabla.*/
+create table dbo.testorderdetail (orderid int not null,
+									itemid int not null,
+									price money not null,
+									qty int not null,
+									lineitemtotal as (price *qty),
+									constraint fk_testorderdetail_orderid foreign key (orderid)
+									references dbo.testorder(orderid),
+									constraint pk_testorderdetail_orderitem primary key (orderid,itemid))
+
+
+-------------------------------------creacion de vistas-----------------------------------------
+USE [AdventureWorks2008R2];
+GO
+
+
+/*Ejercicio 111: Cree una vista denominada dbo.vw_Products que muestre una lista de los productos de la tabla Production.Product unidos a la tabla Production.ProductCostHistory.
+Incluya columnas que describan el producto y muestren el historial de costes de cada producto. Pruebe la vista creando una consulta que recupere datos de la vista.*/
+create view dbo.vw_products as( 
+select p.productid, p.name, p.color, p.size, p.style, h.standardcost, h.enddate,h.startdate 
+from Production.Product as p
+inner join Production.ProductCostHistory as h on p.ProductID = h.ProductID)
+GO
+
+select *
+from dbo.vw_products
+
+
+/*Ejercicio 112: Cree una vista denominada dbo.vw_CustomerTotals que muestre las ventas totales de la columna TotalDue por año y mes para cada cliente. Pruebe la vista creando
+una consulta que recupere datos de la vista*/
+create view dbo.vw_customerstotals as(
+select c.customerid, year(orderdate) as oyear, month(orderdate) as omonth, sum(totaldue) as total
+from sales.Customer as c
+inner join sales.SalesOrderHeader as s on c.CustomerID=s.CustomerID
+group by c.CustomerID, year(orderdate), month(orderdate)
+
+
+-------------------------------------creacion de procedimientos almacenados-----------------------------------------
+USE [AdventureWorks2008R2];
+GO
+
+
+/*Ejercicio 113: Cree un procedimiento almacenado llamado dbo.usp_CustomerTotals en lugar de la vista de la pregunta 1 en el Ejercicio de creación de vistas. 
+Pruebe el procedimiento almacenado*/
+create procedure dbo.usp_customertotals as
+select c.customerid, year(orderdate) as oyear, month(orderdate) as omonth, sum(totaldue) as total
+from sales.Customer as c
+inner join sales.SalesOrderHeader as s on c.CustomerID=s.CustomerID
+group by c.CustomerID, year(orderdate), month(orderdate)
+GO
+
+
+/*Ejercicio 114: Modifique el procedimiento almacenado creado en la pregunta 1 para incluir un parámetro @CustomerID. Utilice el parámetro de la cláusula WHERE de
+la consulta en el procedimiento almacenado. Pruebe el procedimiento almacenado.*/
+create procedure dbo.usp_customertotals2 @customerid int as
+select c.customerid, year(orderdate) as oyear, month(orderdate) as omonth, sum(totaldue) as total
+from sales.Customer as c
+inner join sales.SalesOrderHeader as s on c.CustomerID=s.CustomerID
+where c.CustomerID =@customerid
+group by c.CustomerID, year(orderdate), month(orderdate)
+GO
